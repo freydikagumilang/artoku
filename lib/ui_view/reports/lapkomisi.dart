@@ -62,6 +62,7 @@ class _ResultLapKomisiState extends State<ResultLapKomisi> {
     GetCommissionBydate _bloc = BlocProvider.of<GetCommissionBydate>(context);
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: () async {
@@ -87,117 +88,124 @@ class _ResultLapKomisiState extends State<ResultLapKomisi> {
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: FitnessAppTheme.white),
+                  color: Colors.yellowAccent[100]),
             ),
           ),
           Padding(padding: EdgeInsets.only(bottom: 25)),
           BlocBuilder<GetCommissionBydate, List<invoicedet>>(
               builder: (context, det) {
-            return Table(
-                border: TableBorder(
-                  top: BorderSide(width: 1, color: FitnessAppTheme.white),
-                ),
-                columnWidths: {
-                  0: FractionColumnWidth(0.4),
-                  1: FractionColumnWidth(0.3),
-                  2: FractionColumnWidth(0.3),
-                },
-                children: [
-                  TableRow(
-                      //table header
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                        //                   <--- left side
-                        color: FitnessAppTheme.white,
-                        width: 1.0,
-                      ))),
-                      children: [
-                        Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Text(
-                              "Pegawai",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: FitnessAppTheme.white,
-                              ),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text("Pekerjaan",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: FitnessAppTheme.white,
-                              )),
-                        ),
-                        Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: Text("Komisi",
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: FitnessAppTheme.white,
-                                ))),
-                      ]),
-                  if (det != null)
-                    for (int idx = 0; idx < det.length; idx++)
+            return Expanded(
+              child: SingleChildScrollView(
+                child: Table(
+                    border: TableBorder(
+                      top: BorderSide(width: 1, color: FitnessAppTheme.white),
+                    ),
+                    columnWidths: {
+                      0: FractionColumnWidth(0.4),
+                      1: FractionColumnWidth(0.3),
+                      2: FractionColumnWidth(0.3),
+                    },
+                    children: [
                       TableRow(
-                          decoration: new BoxDecoration(
-                            color: (idx % 2 == 0)
-                                ? FitnessAppTheme.tosca
-                                : Colors.white24,
-                          ),
+                          //table header
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                            //                   <--- left side
+                            color: FitnessAppTheme.white,
+                            width: 1.0,
+                          ))),
                           children: [
-                            TableRowInkWell(
-                              onTap: () {
-                                kapster _dtkapster = new kapster(
-                                    det[idx].invdet_kapster_name, "", "");
-                                _dtkapster.setId(det[idx].invdet_kapster_id);
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        DetailKomisi(
-                                            selectedDate, _dtkapster)));
-                              },
-                              child: Container(
-                                  padding: EdgeInsets.fromLTRB(3, 4, 0, 4),
-                                  child: Text(
-                                    det[idx].invdet_kapster_name,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: FitnessAppTheme.white,
-                                    ),
+                            Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Text(
+                                  "Pegawai",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: FitnessAppTheme.white,
+                                  ),
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text("Pekerjaan",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: FitnessAppTheme.white,
                                   )),
                             ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                              child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    NumCompact.format(det[idx].invdet_qty),
+                            Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Text("Komisi",
+                                    textAlign: TextAlign.right,
                                     style: TextStyle(
                                       fontSize: 18,
+                                      fontWeight: FontWeight.w600,
                                       color: FitnessAppTheme.white,
-                                    ),
-                                  )),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                              child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    NumCompact.format(det[idx].invdet_komisi),
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: FitnessAppTheme.white,
-                                    ),
-                                  )),
-                            ),
-                          ])
-                ]);
+                                    ))),
+                          ]),
+                      if (det != null)
+                        for (int idx = 0; idx < det.length; idx++)
+                          TableRow(
+                              decoration: new BoxDecoration(
+                                color: (idx % 2 == 0)
+                                    ? FitnessAppTheme.tosca
+                                    : Colors.white24,
+                              ),
+                              children: [
+                                TableRowInkWell(
+                                  onTap: () {
+                                    kapster _dtkapster = new kapster(
+                                        det[idx].invdet_kapster_name, "", "");
+                                    _dtkapster
+                                        .setId(det[idx].invdet_kapster_id);
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                DetailKomisi(
+                                                    selectedDate, _dtkapster)));
+                                  },
+                                  child: Container(
+                                      padding: EdgeInsets.fromLTRB(3, 4, 0, 4),
+                                      child: Text(
+                                        det[idx].invdet_kapster_name,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: FitnessAppTheme.white,
+                                        ),
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        NumCompact.format(det[idx].invdet_qty),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: FitnessAppTheme.white,
+                                        ),
+                                      )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                  child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        NumCompact.format(
+                                            det[idx].invdet_komisi),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: FitnessAppTheme.white,
+                                        ),
+                                      )),
+                                ),
+                              ])
+                    ]),
+              ),
+            );
           })
         ],
       ),
@@ -234,8 +242,7 @@ class _DetailKomisiState extends State<DetailKomisi> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: FitnessAppTheme.tosca,
-        appBar:
-            FrxAppBar("Laporan Komisi Penjualan"),
+        appBar: FrxAppBar("Laporan Komisi Penjualan"),
         body: Container(
           padding: EdgeInsets.all(8),
           child: Column(
@@ -287,13 +294,13 @@ class _ResultDetailKomisiState extends State<ResultDetailKomisi> {
     return Container(child:
         BlocBuilder<GetSalesbyPegawaiPeriodic, List<invoicedet>>(
             builder: (context, det) {
-              total_komisi=0;
-              if (det != null){
-                for (int idx = 0; idx < det.length; idx++){
-                  total_komisi+=det[idx].invdet_komisi;
-                }  
-              }
-              
+      total_komisi = 0;
+      if (det != null) {
+        for (int idx = 0; idx < det.length; idx++) {
+          total_komisi += det[idx].invdet_komisi;
+        }
+      }
+
       return Table(
           border: TableBorder(
             top: BorderSide(width: 1, color: FitnessAppTheme.white),

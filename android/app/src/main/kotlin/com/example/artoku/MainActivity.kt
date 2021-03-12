@@ -1,4 +1,4 @@
-package com.example.artoku
+package com.artoku.simple
 
 import io.flutter.embedding.android.FlutterActivity
 

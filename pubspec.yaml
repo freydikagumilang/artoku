@@ -58,12 +58,17 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: SFProDisplay
+    # - family: SFProDisplay
+    #   fonts:
+    #     - asset: assets/fonts/SFProDisplay-Regular.ttf
+    #     - asset: assets/fonts/SFProDisplay-Bold.ttf
+    #       weight: 700
+    #     - asset: assets/fonts/SFProDisplay-Italic.ttf
+    #       style: italic
+    - family: Coves
       fonts:
-        - asset: assets/fonts/SFProDisplay-Regular.ttf
-        - asset: assets/fonts/SFProDisplay-Bold.ttf
+        - asset: assets/fonts/Coves-Light.ttf
+        - asset: assets/fonts/Coves-Bold.ttf
           weight: 700
-        - asset: assets/fonts/SFProDisplay-Italic.ttf
-          style: italic
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

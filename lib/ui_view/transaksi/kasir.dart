@@ -1,5 +1,6 @@
 import 'package:artoku/ui_view/sysconfig/sysconfig.dart';
 import 'package:esc_pos_bluetooth/esc_pos_bluetooth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:artoku/bloc/blockapster.dart';
@@ -231,7 +232,7 @@ class _SearchItemState extends State<SearchItem> {
                 itemCount: (dt_item == null) ? 0 : dt_item.length,
                 itemBuilder: (context, idx) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       AlertDialog pilKapster = AlertDialog(
                         title: Text(dt_item[idx].kat_nama +
                             " " +
@@ -239,7 +240,7 @@ class _SearchItemState extends State<SearchItem> {
                         content:
                             PilihKapster(widget.tabnavigator, dt_item[idx]),
                       );
-                      showDialog(
+                      var ret = await showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return BlocProvider<Getkapster>.value(
@@ -250,6 +251,42 @@ class _SearchItemState extends State<SearchItem> {
                               ),
                             );
                           });
+                      if (ret == true) {
+                        AlertDialog AddItemDone = AlertDialog(
+                            title: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Berhasil menambahkan item",
+                                style: TextStyle(
+                                  color: FitnessAppTheme.tosca,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            content: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_outline_outlined,
+                                    color: FitnessAppTheme.tosca,
+                                  ),
+                                  Padding(padding: EdgeInsets.only(left: 5)),
+                                  Text(dt_item[idx].kat_nama +
+                                      " " +
+                                      dt_item[idx].prod_nama)
+                                ],
+                              ),
+                            ));
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddItemDone;
+                            });
+                      } else {
+                        print("fail");
+                      }
                     },
                     child: Card(
                       child: Padding(
@@ -609,8 +646,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                       children: [
                                         GestureDetector(
                                           child: Icon(
-                                            Icons.close,
-                                            size: 16,
+                                            CupertinoIcons.delete_right_fill,
+                                            size: 20,
                                             color: FitnessAppTheme.redtext,
                                           ),
                                           onTap: () async {
@@ -910,7 +947,6 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                       });
                 } else {
                   if (global_var.isSaved == 0) {
-
                     invoice newInvoice = invoice(
                         _newInvNo,
                         formatter.format(selectedDate),
@@ -923,7 +959,10 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                         0,
                         details: global_var.detailkasir);
                     _creatorNota.add(newInvoice); // Simpan Nota
-                    double total_bayar = (global_var.pembayaran>global_var.total - global_var.diskon)?global_var.total - global_var.diskon:global_var.pembayaran;
+                    double total_bayar = (global_var.pembayaran >
+                            global_var.total - global_var.diskon)
+                        ? global_var.total - global_var.diskon
+                        : global_var.pembayaran;
                     bukukasdet _bukukasdet = bukukasdet(
                         ((global_var.isTunai == 1) ? total_bayar : 0),
                         ((global_var.isTunai == 0) ? total_bayar : 0),
@@ -935,8 +974,12 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                     bukukas _bukukas = bukukas(
                         ((global_var.isTunai == 1) ? total_bayar : 0),
                         ((global_var.isTunai == 0) ? total_bayar : 0),
-                        DateTime(selectedDate.year,selectedDate.month,selectedDate.day,0,0,0,0).millisecondsSinceEpoch, //get today at 00:00:00
-                        DateTime(selectedDate.year,selectedDate.month,selectedDate.day,0,0,0,0).millisecondsSinceEpoch, //get today at 00:00:00
+                        DateTime(selectedDate.year, selectedDate.month,
+                                selectedDate.day, 0, 0, 0, 0)
+                            .millisecondsSinceEpoch, //get today at 00:00:00
+                        DateTime(selectedDate.year, selectedDate.month,
+                                selectedDate.day, 0, 0, 0, 0)
+                            .millisecondsSinceEpoch, //get today at 00:00:00
                         0,
                         detail_bukukas: _bukukasdet);
                     _creatorBukukas.add(_bukukas); // saving buku kas
@@ -1314,7 +1357,7 @@ class _PilihKapsterState extends State<PilihKapster> {
                       invdet_kat_komisi: _prod.komisi_kat);
                   _insertDet.add(itemdet);
                   Navigator.of(context).pop(true);
-                  widget.tabnavigator(2);
+                  // widget.tabnavigator(2);
                 },
                 color: FitnessAppTheme.tosca,
                 child: Text(
