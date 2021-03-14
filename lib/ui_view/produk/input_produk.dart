@@ -168,28 +168,6 @@ class _InputFormState extends State<InputForm> {
                   }
                 },
               ),
-              Row(
-                children: [
-                  Switch(
-                      activeColor: FitnessAppTheme.tosca,
-                      inactiveTrackColor: Colors.red[200],
-                      inactiveThumbColor: FitnessAppTheme.redtext,
-                      value: isStock,
-                      onChanged: (newVal) {
-                        setState(() {
-                          isStock = newVal;
-                        });
-                      }),
-                  Text(
-                    "Menggunakan Stok : ",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    ((isStock) ? "Ya" : "Tidak"),
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
               FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
@@ -200,7 +178,7 @@ class _InputFormState extends State<InputForm> {
                       double harga =
                           double.parse((txtHarga.text).replaceAll(".", ""));
                       produk newprod = produk(txtNamaProduk.text, selectedkat,
-                          "", "", ((isStock) ? 1 : 0), 0.0, harga, 0.0, 0);
+                          "", "", 0, 0.0, harga, 0.0, 0);
                       if (widget.edit_prod != null) {
                         newprod.setId(widget.edit_prod.prod_id);
                       }

@@ -1,12 +1,10 @@
+import 'package:artoku/global_var.dart';
 import 'package:artoku/ui_view/bukukas/bukukas.dart';
+import 'package:artoku/ui_view/intro.dart';
 import 'package:artoku/ui_view/reports/lapkomisi.dart';
 import 'package:artoku/ui_view/reports/lappenjualan.dart';
 import 'package:flutter/material.dart';
-import 'package:artoku/dashboard/dashboard.dart';
-import 'package:artoku/fintness_app_theme.dart';
 import 'package:artoku/homescreen.dart';
-import 'package:artoku/masterdata.dart';
-import 'package:artoku/models/produkmodel.dart';
 import 'package:artoku/ui_view/masterdata/kapster.dart';
 import 'package:artoku/ui_view/masterdata/pelanggan.dart';
 import 'package:artoku/ui_view/produk/produk.dart';
@@ -18,12 +16,28 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+
+class MyApp extends StatefulWidget {
   final int tab_id;
   final DateTime datetime;
-  MyApp({this.tab_id = 0, this.datetime = null});
+  MyApp({this.tab_id = -1, this.datetime = null});
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  int mytab = 0;
+  global_var gb = global_var();
+  @override
+  void initState() {
+
+    if(gb.getPref("nama_bisnis")!=null && gb.getPref("alamat_bisnis")!=null && 
+      gb.getPref("ket_bisnis")!=null && gb.getPref("terimakasih_nota")!=null && widget.tab_id==-1){
+        mytab=-1;
+    }
+    print(mytab);
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,7 +47,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/dashboard': (context) => new MyApp(
                 tab_id: 0,
-                datetime: datetime,
+                datetime: widget.datetime,
               ), //Kategori(),
           '/masterdata': (context) => new MyApp(
                 tab_id: 1,
@@ -59,10 +73,10 @@ class MyApp extends StatelessWidget {
             dialogBackgroundColor: Colors.white,
             colorScheme: ColorScheme.light(primary: Colors.tealAccent[700]),
             textSelectionColor: Colors.grey,
-            fontFamily: 'SFProDisplay'),
-        home: HomeScreen(
-          tab_id: tab_id,
-          datetime: datetime,
+            fontFamily: 'Nunito'),
+        home: (mytab==-1)?IntroPageView():HomeScreen(
+          tab_id: mytab,
+          datetime: widget.datetime,
         ),
       ),
     );
