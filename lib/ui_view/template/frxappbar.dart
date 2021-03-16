@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:artoku/fintness_app_theme.dart';
 
@@ -19,15 +20,21 @@ class _FrxAppBarState extends State<FrxAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
         backgroundColor: FitnessAppTheme.tosca,
-        leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
+        leading: IconButton(
+            icon: new Icon((widget.backroute == "firstload")
+                ? CupertinoIcons.building_2_fill
+                : Icons.arrow_back),
             onPressed: () {
-              if (widget.backroute != null) {
-               Navigator.of(context, rootNavigator: true).pushNamed(widget.backroute);
-              }else{
-                Navigator.of(context).pop();
+              if (widget.backroute != "firstload") {
+                if (widget.backroute != null) {
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamed(widget.backroute);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              } else {
+                return null;
               }
-              
             }),
         elevation: 0,
         title: Text(

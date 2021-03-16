@@ -28,7 +28,6 @@ class _SysConfigState extends State<SysConfig> {
                 create: (context) => TruncateTransactions(0)),
             BlocProvider<TruncateAllData>(
                 create: (context) => TruncateAllData(0)),
-                
           ],
           child: Container(
             child: ListView(
@@ -106,6 +105,8 @@ class _SysConfigState extends State<SysConfig> {
 }
 
 class CompanyConfig extends StatefulWidget {
+  int isfirst;
+  CompanyConfig({this.isfirst = 0});
   @override
   _CompanyConfigState createState() => _CompanyConfigState();
 }
@@ -142,18 +143,22 @@ class _CompanyConfigState extends State<CompanyConfig> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MyApp(
-                      tab_id: 0,
-                    )));
+        if (widget.isfirst == 0) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyApp(
+                        tab_id: 0,
+                      )));
+        } else {
+          return null;
+        }
       },
       child: Scaffold(
         backgroundColor: FitnessAppTheme.tosca,
         appBar: FrxAppBar(
           "Profil Bisnis",
-          backroute: "/sysconfig",
+          backroute: (widget.isfirst == 0) ? "/sysconfig" : "firstload",
         ),
         body: WillPopScope(
             onWillPop: () {
@@ -254,17 +259,24 @@ class _CompanyConfigState extends State<CompanyConfig> {
                       ),
                       color: FitnessAppTheme.yellow,
                       onPressed: () async {
+                        gb.savePref("first_load", "1");
                         gb.savePref("nama_bisnis", txtCompany.text);
                         gb.savePref("alamat_bisnis", txtAlamat.text);
                         gb.savePref("ket_bisnis", txtket.text);
                         gb.savePref("terimakasih_nota", txtterimakasih.text);
-                        Navigator.of(context).pop();
+                        if (widget.isfirst == 1) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyApp(tab_id: 0)));
+                        } else {
+                          Navigator.of(context).pop();
+                        }
                       },
                       padding: EdgeInsets.all(4.0),
                       child: Text(
-                        "Simpan",
-                        style: TextStyle(
-                            fontSize: 25.0, color: FitnessAppTheme.white),
+                        (widget.isfirst == 1) ? "Mulai Bisnis" : "Update",
+                        style: TextStyle(fontSize: 25.0, color: Colors.black),
                       ))
                 ],
               ),
@@ -442,7 +454,7 @@ class DatabaseConfigState extends State<DatabaseConfig> {
   Widget build(BuildContext context) {
     TruncateTransactions _truncate_transaction = TruncateTransactions(0);
     TruncateAllData _truncate_all_data = TruncateAllData(0);
-    
+
     return WillPopScope(
       onWillPop: () {
         Navigator.push(
@@ -462,7 +474,7 @@ class DatabaseConfigState extends State<DatabaseConfig> {
                     color: FitnessAppTheme.white,
                     tiles: [
                   ListTile(
-                    onTap: ()async {
+                    onTap: () async {
                       AlertDialog _confirmation = new AlertDialog(
                         title: Text("Reset Seluruh Data"),
                         content: Text(

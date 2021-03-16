@@ -72,8 +72,8 @@ class _DashboardState extends State<Dashboard> {
                   final DateTime picked = await showDatePicker(
                     context: context,
                     initialDate: selectedDate, // Refer step 1
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2025),
+                    firstDate: DateTime(2021),
+                    lastDate: DateTime(DateTime.now().year+1),
                     cancelText: "Batal",
                     confirmText: "Pilih",
                   );

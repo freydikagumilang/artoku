@@ -16,7 +16,6 @@ void main() {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatefulWidget {
   final int tab_id;
   final DateTime datetime;
@@ -28,14 +27,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int mytab = 0;
   global_var gb = global_var();
+  int firstload = 0;
   @override
   void initState() {
-
-    if(gb.getPref("nama_bisnis")!=null && gb.getPref("alamat_bisnis")!=null && 
-      gb.getPref("ket_bisnis")!=null && gb.getPref("terimakasih_nota")!=null && widget.tab_id==-1){
-        mytab=-1;
-    }
-    print(mytab);
+    checkfirstload();
+  }
+  void checkfirstload()async {
+     gb.getPref("first_load").then((value) {
+      if (value != "1") {        
+          mytab = -1;
+      }
+    });
+    
   }
 
   @override
@@ -73,11 +76,13 @@ class _MyAppState extends State<MyApp> {
             dialogBackgroundColor: Colors.white,
             colorScheme: ColorScheme.light(primary: Colors.tealAccent[700]),
             textSelectionColor: Colors.grey,
-            fontFamily: 'Nunito'),
-        home: (mytab==-1)?IntroPageView():HomeScreen(
-          tab_id: mytab,
-          datetime: widget.datetime,
-        ),
+            fontFamily: 'HindSiliguri'),
+        home: (mytab == -1)
+            ? IntroPageView()
+            : HomeScreen(
+                tab_id: mytab,
+                datetime: widget.datetime,
+              ),
       ),
     );
   }

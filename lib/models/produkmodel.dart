@@ -113,7 +113,7 @@ class produkDAO {
     String sSQL = '''select * from produk 
               left join kategori
               on kat_id = prod_kat_id 
-              where prod_nama like "%${cari}%"
+              where prod_nama || kat_nama like "%${cari}%"
               order by prod_sale_retention desc''';
     List<Map> datalist = await dbClient.rawQuery(sSQL);
     List<produk> listproduk = new List();

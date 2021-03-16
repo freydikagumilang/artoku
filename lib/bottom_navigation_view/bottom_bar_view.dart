@@ -253,7 +253,7 @@ class _TabIconsState extends State<TabIcons> with TickerProviderStateMixin {
                       // Image.asset(widget.tabIconData.isSelected
                       //     ? widget.tabIconData.selectedImagePath
                       //     : widget.tabIconData.imagePath,height: 30,),
-                      Icon(widget.tabIconData.icon,size: 30,color: widget.tabIconData.isSelected?FitnessAppTheme.yellow:FitnessAppTheme.background,),
+                      Icon(widget.tabIconData.icon,size: 27,color: widget.tabIconData.isSelected?FitnessAppTheme.yellow:FitnessAppTheme.background,),
                       Text(widget.tabIconData.menu,style: TextStyle(color: FitnessAppTheme.background),),
                       Divider(
                         thickness: widget.tabIconData.isSelected?2:0,
