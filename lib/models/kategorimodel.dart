@@ -33,7 +33,7 @@ class kategori {
 class kategoriDAO {
   Future<List<kategori>> getKat(String cari) async {
     var dbClient = await DBHelper().setDb();
-    await dbClient.rawQuery("Create table IF NOT EXISTS kategori (kat_id INTEGER PRIMARY KEY autoincrement,kat_nama string,kat_komisi Real)");
+    
     
     List<Map> datalist = await dbClient.rawQuery("select * from kategori where kat_nama like '%${cari}%' ");
     List<kategori> listkategori = new List();

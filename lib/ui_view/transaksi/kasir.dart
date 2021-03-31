@@ -120,7 +120,7 @@ class KasirState extends State<Kasir> with SingleTickerProviderStateMixin {
                       offset: Offset(0, 3), // changes position of shadow
                     )
                   ],
-                  color: FitnessAppTheme.tosca,
+                  color: Colors.teal[300].withOpacity(0.7),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
@@ -187,10 +187,12 @@ class _SearchItemState extends State<SearchItem> {
                   child: Card(
                       color: FitnessAppTheme.white,
                       child: TextFormField(
+                        
                         controller: txtcariprod,
                         style: TextStyle(fontSize: 20.0, color: Colors.black),
                         decoration: InputDecoration(
                             hintText: "Cari Produk",
+                            contentPadding: EdgeInsets.all(8),
                             prefixIcon: Icon(
                               Icons.search,
                               color: FitnessAppTheme.tosca,
@@ -289,8 +291,9 @@ class _SearchItemState extends State<SearchItem> {
                       }
                     },
                     child: Card(
+                      color: FitnessAppTheme.white,
                       child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.fromLTRB(8, 4, 5, 8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -303,12 +306,10 @@ class _SearchItemState extends State<SearchItem> {
                                       fontSize: 14,
                                       color: FitnessAppTheme.grey),
                                 ),
-                                Padding(padding: EdgeInsets.all(2)),
                                 Text(
                                   dt_item[idx].prod_nama,
                                   style: TextStyle(fontSize: 20),
                                 ),
-                                Padding(padding: EdgeInsets.all(2)),
                               ],
                             ),
                             Text(
@@ -363,6 +364,7 @@ class _SearchPelangganState extends State<SearchPelanggan> {
                           style: TextStyle(fontSize: 20.0, color: Colors.black),
                           decoration: InputDecoration(
                             hintText: "Nama / No.HP Pelanggan",
+                            contentPadding: EdgeInsets.all(8),
                             prefixIcon: Icon(
                               Icons.search,
                               color: FitnessAppTheme.tosca,
@@ -519,8 +521,9 @@ class _KasirCheckoutState extends State<KasirCheckout> {
         children: [
           Card(
             elevation: 3,
+            color: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(18.0),
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -714,14 +717,14 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                           ))),
                           children: [
                             Padding(
-                                padding: EdgeInsets.all(2.0),
+                                padding: EdgeInsets.all(0.0),
                                 child: Text("Total",
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400))),
                             Padding(
-                              padding: const EdgeInsets.all(2.0),
+                              padding: const EdgeInsets.all(0.0),
                               child: Text(
                                   (global_var.detailkasir == null)
                                       ? "0"
@@ -733,7 +736,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                       fontWeight: FontWeight.w400)),
                             ),
                             Padding(
-                                padding: EdgeInsets.all(2.0),
+                                padding: EdgeInsets.all(0.0),
                                 child: Text(NumFormat.format(global_var.total),
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
@@ -742,7 +745,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                           ]),
                       TableRow(children: [
                         Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(0.0),
                             child: Text("Potongan",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
@@ -761,7 +764,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                           ],
                         ),
                         Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(0.0),
                             child: GestureDetector(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -800,24 +803,22 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                       ]),
                       TableRow(children: [
                         Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(0.0),
                             child: Text(
-                                (global_var.isTunai == 1)
-                                    ? "Tunai"
-                                    : "Non-Tunai",
+                                "Pembayaran",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400))),
                         Padding(
-                          padding: const EdgeInsets.all(2.0),
+                          padding: const EdgeInsets.all(0.0),
                           child: Text("",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w400)),
                         ),
                         Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(0.0),
                             child: GestureDetector(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -855,7 +856,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                       ]),
                       TableRow(children: [
                         Padding(
-                            padding: EdgeInsets.all(2.0),
+                            padding: EdgeInsets.all(0.0),
                             child: Text(
                                 (global_var.kembalian >= 0)
                                     ? "Kembali"
@@ -870,7 +871,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(2.0),
+                              padding: const EdgeInsets.all(0.0),
                               child: Text("",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -880,7 +881,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.all(2.0),
+                          padding: EdgeInsets.all(0.0),
                           child: Text(
                               NumFormat.format((global_var.kembalian).abs()),
                               textAlign: TextAlign.right,
@@ -899,11 +900,12 @@ class _KasirCheckoutState extends State<KasirCheckout> {
             ),
           ),
           Padding(padding: EdgeInsets.all(8)),
-          RaisedButton(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.teal[300].withOpacity(0.7),
+                shape: StadiumBorder(),
+                elevation: 3
+              ),              
               onPressed: () async {
                 if (global_var.kasirpelanggan == null) {
                   AlertDialog _savealert = AlertDialog(
@@ -1013,15 +1015,15 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                   }
                 }
               },
-              color: FitnessAppTheme.yellow,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Icon(Icons.save_rounded),
                     Text(
-                      "Simpan Transaksi",
-                      style: TextStyle(fontSize: 25.0, color: Colors.white),
+                      " Simpan Transaksi",
+                      style: TextStyle(fontSize: 20.0, color: FitnessAppTheme.white),
                     ),
                   ],
                 ),
@@ -1318,8 +1320,8 @@ class _PilihKapsterState extends State<PilihKapster> {
             TextFormField(
               controller: txtketItem,
               style: TextStyle(fontSize: 16.0, color: Colors.black),
-              minLines: 5, //Normal textInputField will be displayed
-              maxLines: 5,
+              minLines: 3, //Normal textInputField will be displayed
+              maxLines: 3,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(hintText: "Catatan"),
             ),

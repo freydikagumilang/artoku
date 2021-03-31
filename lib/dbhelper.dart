@@ -22,6 +22,9 @@ class DBHelper {
     return dB;
   }
   void _initDB(Database db, int ver) async {
+
+    String sSQLkategori ="Create table IF NOT EXISTS kategori (kat_id INTEGER PRIMARY KEY autoincrement,kat_nama string,kat_komisi Real)";
+    await db.execute(sSQLkategori);
     print("created init_db");
     String sSQL =
         '''Create table IF NOT EXISTS invoice (inv_id INTEGER PRIMARY KEY autoincrement,inv_no string,inv_plg_id int,

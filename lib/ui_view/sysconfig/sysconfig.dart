@@ -15,6 +15,7 @@ class SysConfig extends StatefulWidget {
 }
 
 class _SysConfigState extends State<SysConfig> {
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -94,7 +95,7 @@ class _SysConfigState extends State<SysConfig> {
                         Icons.chevron_right,
                         color: FitnessAppTheme.white,
                       ),
-                    )
+                    ),
                   ]).toList(),
             ),
           ),
@@ -566,6 +567,20 @@ class DatabaseConfigState extends State<DatabaseConfig> {
                   ),
                 ]).toList())),
       ),
+    );
+  }
+}
+
+class LoginDenganGoogle extends StatefulWidget {
+  @override
+  _LoginDenganGoogleState createState() => _LoginDenganGoogleState();
+}
+
+class _LoginDenganGoogleState extends State<LoginDenganGoogle> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }
