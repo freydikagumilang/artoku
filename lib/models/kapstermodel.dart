@@ -39,7 +39,7 @@ class KapsterDAO {
   Future<List<kapster>> getKapster(String cari) async {
     var dbClient = await DBHelper().setDb();
     
-    List<Map> datalist = await dbClient.rawQuery("select * from kapster where kapster_nama like '%${cari}%' or kapster_hp like '%${cari}%'");
+    List<Map> datalist = await dbClient.rawQuery("select * from kapster where kapster_nama like '%${cari}%' or kapster_hp like '%${cari}%' order by kapster_nama");
     List<kapster> listkapster = new List();
 
     for (var i = 0; i < datalist.length; i++) {

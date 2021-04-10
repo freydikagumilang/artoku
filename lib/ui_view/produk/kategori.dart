@@ -5,6 +5,7 @@ import 'package:artoku/fintness_app_theme.dart';
 import 'package:artoku/models/kategorimodel.dart';
 import 'package:artoku/ui_view/template/frxappbar.dart';
 import 'package:artoku/txtformater.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class Kategori extends StatefulWidget {
@@ -122,144 +123,104 @@ class _kategorilistState extends State<kategorilist> {
               },
             )),
         Expanded(
-          child: ListView(
-              padding: EdgeInsets.only(bottom: 100),
-              shrinkWrap: true,
-              children: [
-                Card(
-                  color: FitnessAppTheme.white,
-                  child: BlocBuilder<GetKategori, List<kategori>>(
-                    builder: (context, kat) => DataTable(
-                        showBottomBorder: true,
-                        columns: [
-                          DataColumn(
-                              label: Text("Kategori - Komisi",
-                                  style: TextStyle(fontSize: 20))),
-                        ],
-                        rows: List<DataRow>.generate(
-                            ((kat == null) ? 0 : kat.length),
-                            (index) => DataRow(
-                                    color: MaterialStateProperty.resolveWith<
-                                        Color>((Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.selected))
-                                        return FitnessAppTheme.redtext;
-                                      // Even rows will have a grey color.
-                                      if (index % 2 == 0)
-                                        return FitnessAppTheme.nearlyBlack
-                                            .withOpacity(0.1);
-                                      return null;
-                                    }),
-                                    cells: [
-                                      DataCell(Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              GestureDetector(
-                                                child: Icon(Icons.edit,
-                                                    color:
-                                                        FitnessAppTheme.tosca),
-                                                onTap: () async {
-                                                  AlertDialog inputdialog =
-                                                      AlertDialog(
-                                                    title: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                            "Edit Kategori ${kat[index].kat_nama}"),
-                                                        GestureDetector(
-                                                          child:
-                                                              Icon(Icons.close),
-                                                          onTap: () {
-                                                            Navigator.pop(
-                                                                context, false);
-                                                          },
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    content: InputKategori(
-                                                      editKat:
-                                                          kat[index].kat_nama,
-                                                      idKat: kat[index].kat_id,
-                                                      editKom:
-                                                          kat[index].kat_komisi,
-                                                    ),
-                                                  );
-                                                  final res = await showDialog(
-                                                      barrierDismissible: false,
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return BlocProvider<
-                                                            CreateKategori>.value(
-                                                          value:
-                                                              CreateKategori(0),
-                                                          child: inputdialog,
-                                                        );
-                                                      });
-                                                  if (res) {
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                Kategori()));
-                                                  }
-                                                },
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 8)),
-                                              Text(
-                                                kat[index].kat_nama +
-                                                    " - " +
-                                                    NumFormat.format(kat[index]
-                                                            .kat_komisi)
-                                                        .toString() +
-                                                    "%",
-                                                style: TextStyle(fontSize: 21),
-                                              ),
-                                            ],
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              AlertDialog delKat = AlertDialog(
-                                                title: Text(
-                                                    "Hapus Kategori ${kat[index].kat_nama}"),
-                                                content: DeleteConfirmation(
-                                                    kat[index].kat_nama,
-                                                    kat[index].kat_id),
-                                              );
-                                              final del = await showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return BlocProvider<
-                                                        DeleteKategori>.value(
-                                                      value: DeleteKategori(0),
-                                                      child: delKat,
-                                                    );
-                                                  });
-                                              if (del) {
-                                                GetKategori bloc = BlocProvider
-                                                    .of<GetKategori>(context);
-                                                bloc.add("");
-                                              }
-                                            },
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: FitnessAppTheme.redtext,
-                                            ),
-                                          ),
-                                        ],
-                                      ))
-                                    ]))),
-                  ),
-                )
-              ]),
+          child: BlocBuilder<GetKategori, List<kategori>>(
+              builder: (context, kat) => ListView.builder(
+                  itemCount: (kat != null) ? kat.length : 0,
+                  itemBuilder: (context, idx) {
+                    return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        elevation: 0,
+                        color: FitnessAppTheme.white,
+                        child: Slidable(
+                          actionPane: SlidableDrawerActionPane(),
+                          actionExtentRatio: 0.25,
+                          child: ListTile(
+                            title: Text(kat[idx].kat_nama,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 20)),
+                            trailing: Text(
+                                NumFormat.format(kat[idx].kat_komisi)
+                                        .toString() +
+                                    " %",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 20)),
+                          ),
+                          secondaryActions: <Widget>[
+                            IconSlideAction(
+                                caption: 'Edit',
+                                color: FitnessAppTheme.yellow,
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                onTap: () async {
+                                  AlertDialog inputdialog = AlertDialog(
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            "Edit Kategori ${kat[idx].kat_nama}"),
+                                        GestureDetector(
+                                          child: Icon(Icons.close),
+                                          onTap: () {
+                                            Navigator.pop(context, false);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    content: InputKategori(
+                                      editKat: kat[idx].kat_nama,
+                                      idKat: kat[idx].kat_id,
+                                      editKom: kat[idx].kat_komisi,
+                                    ),
+                                  );
+                                  final res = await showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BlocProvider<
+                                            CreateKategori>.value(
+                                          value: CreateKategori(0),
+                                          child: inputdialog,
+                                        );
+                                      });
+                                  if (res) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => Kategori()));
+                                  }
+                                }),
+                            IconSlideAction(
+                                caption: 'Share',
+                                color: Colors.red[900],
+                                icon: Icons.delete_outline_rounded,
+                                onTap: () async {
+                                  AlertDialog delKat = AlertDialog(
+                                    title: Text(
+                                        "Hapus Kategori ${kat[idx].kat_nama}"),
+                                    content: DeleteConfirmation(
+                                        kat[idx].kat_nama, kat[idx].kat_id),
+                                  );
+                                  final del = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BlocProvider<
+                                            DeleteKategori>.value(
+                                          value: DeleteKategori(0),
+                                          child: delKat,
+                                        );
+                                      });
+                                  if (del) {
+                                    GetKategori bloc =
+                                        BlocProvider.of<GetKategori>(context);
+                                    bloc.add("");
+                                  }
+                                }),
+                          ],
+                        ));
+                  })),
         ),
       ],
     );
@@ -293,7 +254,7 @@ class _InputKategoriState extends State<InputKategori> {
     return Form(
       key: _formKey,
       child: SizedBox(
-        height: MediaQuery.of(context).size.height/3.5,
+        height: MediaQuery.of(context).size.height / 3.5,
         child: BlocBuilder<CreateKategori, int>(
           builder: (context, idkat) => (Column(
               mainAxisSize: MainAxisSize.min,

@@ -6,6 +6,7 @@ import 'package:artoku/main.dart';
 import 'package:artoku/models/pelangganmodel.dart';
 import 'package:artoku/ui_view/masterdata/input_pelanggan.dart';
 import 'package:artoku/ui_view/template/frxappbar.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Pelanggan extends StatefulWidget {
   @override
@@ -18,8 +19,12 @@ class _PelangganState extends State<Pelanggan> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyApp(tab_id: 1,)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyApp(
+                      tab_id: 1,
+                    )));
       },
       child: MultiBlocProvider(
         providers: [
@@ -91,141 +96,79 @@ class _PelangganlistState extends State<Pelangganlist> {
               },
             )),
         Expanded(
-          child: ListView(
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Card(
-                  color: FitnessAppTheme.white,
-                  child: BlocBuilder<Getpelanggan, List<pelanggan>>(
-                      builder: (context, dataplg) => DataTable(
-                            dataRowHeight: 70,
-                            showBottomBorder: true,
-                            columns: [
-                              DataColumn(
-                                  label: Text("Nama",
-                                      style: TextStyle(fontSize: 20))),
-                              DataColumn(
-                                  label: Text("HP",
-                                      style: TextStyle(fontSize: 20))),
-                              DataColumn(
-                                label: Icon(
-                                  Icons.delete_forever,
-                                  size: 30,
-                                  color: FitnessAppTheme.redtext,
-                                ),
+            child: BlocBuilder<Getpelanggan, List<pelanggan>>(
+                builder: (context, dataplg) => ListView.builder(
+                    itemCount: (dataplg != null) ? dataplg.length : 0,
+                    itemBuilder: (context, idx) {
+                      return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          elevation: 0,
+                          color: FitnessAppTheme.white,
+                          child: Slidable(
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.25,
+                            child: ListTile(
+                              title: Text(dataplg[idx].pelanggan_nama,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 20)),
+                              subtitle: Text(
+                                  (dataplg[idx].pelanggan_alamat != null)
+                                      ? dataplg[idx].pelanggan_alamat
+                                      : "",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: FitnessAppTheme.grey)),
+                              trailing: Text(
+                                  dataplg[idx].pelanggan_hp.toString(),
+                                  style: TextStyle(fontSize: 23)),
+                            ),
+                            secondaryActions: <Widget>[
+                              IconSlideAction(
+                                caption: 'Edit',
+                                color: FitnessAppTheme.yellow,
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => InputPelanggan(
+                                                editPlg: dataplg[idx],
+                                              )));
+                                },
+                              ),
+                              IconSlideAction(
+                                caption: 'Share',
+                                color: Colors.red[900],
+                                icon: Icons.delete_outline_rounded,
+                                onTap: () async {
+                                  AlertDialog delKat = AlertDialog(
+                                    title: Text(
+                                        "Hapus Kategori ${dataplg[idx].pelanggan_nama}"),
+                                    content: DeleteConfrimationPelanggan(
+                                        dataplg[idx]),
+                                  );
+                                  final del = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return BlocProvider<
+                                            Deletepelanggan>.value(
+                                          value: Deletepelanggan(0),
+                                          child: delKat,
+                                        );
+                                      });
+                                  if (del) {
+                                    Getpelanggan bloc =
+                                        BlocProvider.of<Getpelanggan>(context);
+                                    bloc.add("");
+                                  }
+                                },
                               ),
                             ],
-                            rows: List<DataRow>.generate(
-                              ((dataplg == null) ? 0 : dataplg.length),
-                              (index) => DataRow(
-                                  color:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                          (Set<MaterialState> states) {
-                                    if (states.contains(MaterialState.selected))
-                                      return FitnessAppTheme.nearlyBlue;
-                                    // Even rows will have a grey color.
-                                    if (index % 2 == 0)
-                                      return FitnessAppTheme.nearlyBlack
-                                          .withOpacity(0.1);
-                                    return null;
-                                  }),
-                                  cells: [
-                                    DataCell(Padding(
-                                      padding: const EdgeInsets.all(0.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      InputPelanggan(
-                                                        editPlg: dataplg[index],
-                                                      )));
-                                        },
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.45,
-                                              child: Text(
-                                                  dataplg[index].pelanggan_nama,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style:
-                                                      TextStyle(fontSize: 20)),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.all(3),
-                                            ),
-                                            Text(
-                                              (dataplg[index]
-                                                          .pelanggan_alamat !=
-                                                      null)
-                                                  ? dataplg[index]
-                                                      .pelanggan_alamat
-                                                  : "",
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: FitnessAppTheme.grey),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    )),
-                                    DataCell(
-                                      Text(
-                                          dataplg[index]
-                                              .pelanggan_hp
-                                              .toString(),
-                                          style: TextStyle(fontSize: 23)),
-                                    ),
-                                    DataCell(
-                                      GestureDetector(
-                                        onTap: () async {
-                                          AlertDialog delKat = AlertDialog(
-                                            title: Text(
-                                                "Hapus Kategori ${dataplg[index].pelanggan_nama}"),
-                                            content:
-                                                DeleteConfrimationPelanggan(
-                                                    dataplg[index]),
-                                          );
-                                          final del = await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return BlocProvider<
-                                                    Deletepelanggan>.value(
-                                                  value: Deletepelanggan(0),
-                                                  child: delKat,
-                                                );
-                                              });
-                                          if (del) {
-                                            Getpelanggan bloc =
-                                                BlocProvider.of<Getpelanggan>(
-                                                    context);
-                                            bloc.add("");
-                                          }
-                                        },
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: FitnessAppTheme.redtext,
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                            ),
-                          )),
-                ),
-              ),
-            ],
-          ),
-        ),
+                          ));
+                    }))),
       ],
     );
   }

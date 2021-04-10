@@ -19,7 +19,7 @@ void main() {
 class MyApp extends StatefulWidget {
   final int tab_id;
   final DateTime datetime;
-  MyApp({this.tab_id = -1, this.datetime = null});
+  MyApp({this.tab_id = 0, this.datetime = null});
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -51,10 +51,10 @@ class _MyAppState extends State<MyApp> {
           '/dashboard': (context) => new MyApp(
                 tab_id: 0,
                 datetime: widget.datetime,
-              ), //Kategori(),
+              ),
           '/masterdata': (context) => new MyApp(
                 tab_id: 1,
-              ), //Kategori(),
+              ),
           '/menulaporan': (context) => new MyApp(
                 tab_id: 3,
               ), //Kategori(),
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
         home: (mytab == -1)
             ? IntroPageView()
             : HomeScreen(
-                tab_id: mytab,
+                tab_id: widget.tab_id,
                 datetime: widget.datetime,
               ),
       ),

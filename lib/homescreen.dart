@@ -9,8 +9,8 @@ import 'bottom_navigation_view/bottom_bar_view.dart';
 import 'fintness_app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
-  final int tab_id;
-  final DateTime datetime;
+  int tab_id;
+  DateTime datetime;
   HomeScreen({this.tab_id = 0,this.datetime=null});
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -27,17 +27,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    
     // TODO: implement initState
     tabIconsList.forEach((TabIconData tab) {
       tab.isSelected = false;
     });
     tabIconsList[widget.tab_id].isSelected = true;
-    
+    print("tab_id : "+widget.tab_id.toString());
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
     if (widget.tab_id == 0) {
       tabBody = Dashboard(dt: widget.datetime,);
     } else if (widget.tab_id == 1) {
+      
       tabBody = MasterData();
     } else if (widget.tab_id == 2) {
       tabBody = BukuKas();
@@ -46,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     super.initState();
+    
   }
 
   @override

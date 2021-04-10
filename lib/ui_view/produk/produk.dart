@@ -5,6 +5,7 @@ import 'package:artoku/fintness_app_theme.dart';
 import 'package:artoku/models/produkmodel.dart';
 import 'package:artoku/ui_view/produk/input_produk.dart';
 import 'package:artoku/ui_view/template/frxappbar.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 class Produk extends StatefulWidget {
@@ -29,7 +30,10 @@ class _ProdukState extends State<Produk> {
         ],
         child: Scaffold(
           backgroundColor: FitnessAppTheme.tosca,
-          appBar: FrxAppBar("Item/Layanan",backroute:"/masterdata",),
+          appBar: FrxAppBar(
+            "Item/Layanan",
+            backroute: "/masterdata",
+          ),
           floatingActionButton: FloatingActionButton(
             child: Icon(
               Icons.add,
@@ -91,105 +95,61 @@ class _ProduklistState extends State<Produklist> {
                 });
               },
             )),
-        Expanded(
-          child: ListView(
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Card(
-                  color: FitnessAppTheme.white,
-                  child: BlocBuilder<Getproduk, List<produk>>(
-                      builder: (context, dataprod) => DataTable(
-                          dataRowHeight: 70,
-                          showBottomBorder: true,
-                          columns: [
-                            DataColumn(
-                                label: Text("Nama",
-                                    style: TextStyle(fontSize: 20))),
-                            DataColumn(
-                                label: Text("Harga",
-                                    style: TextStyle(fontSize: 20))),
-                            DataColumn(
-                              label: Icon(
-                                Icons.delete_forever,
-                                size: 30,
-                                color: FitnessAppTheme.redtext,
-                              ),
+        BlocBuilder<Getproduk, List<produk>>(
+            builder: (context, dataprod) => Expanded(
+                  child: ListView.builder(
+                    itemCount: (dataprod != null) ? dataprod.length : 0,
+                    itemBuilder: (context, idx) {
+                      return Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          elevation: 0,
+                          color: FitnessAppTheme.white,
+                          child: Slidable(
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.25,
+                            child: ListTile(
+                              title: Text(dataprod[idx].prod_nama,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 20)),
+                              subtitle: Text(
+                                  (dataprod[idx].kat_nama != null)
+                                      ? dataprod[idx].kat_nama
+                                      : "",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: FitnessAppTheme.grey)),
+                              trailing: Text(
+                                  NumFormat.format(dataprod[idx].prod_price)
+                                      .toString(),
+                                  style: TextStyle(fontSize: 23)),
                             ),
-                          ],
-                          rows: List<DataRow>.generate(
-                            ((dataprod == null) ? 0 : dataprod.length),
-                            (index) => DataRow(
-                                color: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.selected))
-                                    return FitnessAppTheme.nearlyBlue;
-                                  // Even rows will have a grey color.
-                                  if (index % 2 == 0)
-                                    return FitnessAppTheme.nearlyBlack
-                                        .withOpacity(0.1);
-                                  return null;
-                                }),
-                                cells: [
-                                  DataCell(Padding(
-                                    padding: const EdgeInsets.all(0.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    InputProduk(
-                                                      edit_prod:
-                                                          dataprod[index],
-                                                    )));
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.45,
-                                            child: Text(
-                                                dataprod[index].prod_nama,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(fontSize: 20)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.all(3),
-                                          ),
-                                          Text(
-                                            (dataprod[index].kat_nama != null)
-                                                ? dataprod[index].kat_nama
-                                                : "",
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: FitnessAppTheme.grey),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )),
-                                  DataCell(
-                                    Text(
-                                        NumFormat.format(
-                                                dataprod[index].prod_price)
-                                            .toString(),
-                                        style: TextStyle(fontSize: 23)),
-                                  ),
-                                  DataCell(
-                                    GestureDetector(
-                                        onTap: () async {
+                            secondaryActions: <Widget>[
+                              IconSlideAction(
+                                caption: 'Edit',
+                                color: FitnessAppTheme.yellow,
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => InputProduk(
+                                                edit_prod: dataprod[idx],
+                                              )));
+                                },
+                              ),
+                              IconSlideAction(
+                                caption: 'Share',
+                                color: Colors.red[900],
+                                icon: Icons.delete_outline_rounded,
+                                onTap: () async {
                                           AlertDialog delDialog = AlertDialog(
                                             title: Text("Hapus Produk !"),
                                             content: DeleteConfirmation(
-                                                dataprod[index].prod_nama,
-                                                dataprod[index].prod_id),
+                                                dataprod[idx].prod_nama,
+                                                dataprod[idx].prod_id),
                                           );
                                           final del = await showDialog(
                                               context: context,
@@ -207,19 +167,12 @@ class _ProduklistState extends State<Produklist> {
                                             bloc.add("");
                                           }
                                         },
-                                        child: Icon(
-                                          Icons.delete_forever,
-                                          size: 30,
-                                          color: FitnessAppTheme.redtext,
-                                        )),
-                                  ),
-                                ]),
-                          ))),
-                ),
-              ),
-            ],
-          ),
-        ),
+                              ),
+                            ],
+                          ));
+                    },
+                  ),
+                ))
       ],
     );
   }
