@@ -203,3 +203,37 @@ class GetSalesbyPegawaiPeriodic extends Bloc<fltKomisiPegawai, List<invoicedet>>
   }
 
 }
+
+class GetListInvoice extends Bloc<filterInvoices, List<invoice>>{
+  GetListInvoice(List<invoice> initialState) : super(initialState);
+
+  @override
+  Stream<List<invoice>> mapEventToState(filterInvoices event) async* {
+    final _notaDAO = invoiceDAO();
+    try {
+      List<invoice> _result = await _notaDAO.getInv(event);
+      yield _result;
+    } catch (e) {
+      print("error");
+      print(e);
+    }
+  }
+
+}
+class DeleteTransactions extends Bloc<invoice, int> {
+  DeleteTransactions(int initialState) : super(initialState);
+
+  @override
+  Stream<int> mapEventToState(invoice event) async* {
+    final _notaDAO = invoiceDAO();
+    try {
+      int _result = await _notaDAO.DeleteTransaction(event);
+      yield _result;
+    } catch (e) {
+      print("error");
+      print(e);
+    }
+  }
+  
+
+}

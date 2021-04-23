@@ -219,20 +219,75 @@ class fltKomisiPegawai{
 
 }
 
+class filterInvoices{
+  DateTimeRange dtr;
+  invoice inv;
+  filterInvoices(this.dtr,this.inv);
+
+}
+
 class invoiceDAO {
-  Future<List<invoice>> getInv(String cari) async {
+  Future<List<invoice>> getInv(filterInvoices cari) async {
     var dbClient = await DBHelper().setDb();
+    String q = "";
     String sSQL = '''select * 
     from invoice 
-    inner join pelanggan
+    left join pelanggan
       on inv_plg_id = pelanggan_id
-    where (inv_no like "%${cari}%" or pelanggan_nama like "%${cari}%" or 
-    pelanggan_hp like "%${cari}%") and  inv_deleted_at = 0''';
+    where 1=1 ''';
 
+      if(cari.inv.inv_plg_nama!="" && cari.inv.inv_plg_nama!=null){
+        q=cari.inv.inv_plg_nama;
+        sSQL+=''' and (pelanggan_nama like "%${q}%" or pelanggan_hp like "%${q}%")''';
+      }
+      if(cari.inv.inv_no!="" && cari.inv.inv_no!=null){
+        q=cari.inv.inv_no;
+        sSQL+=''' and inv_no like "%${q}%"''';
+      }
+      if(cari.dtr.start !="" && cari.dtr.start!=null){
+        int start_date = cari.dtr.start.millisecondsSinceEpoch;
+        int end_date = cari.dtr.end.millisecondsSinceEpoch;
+        sSQL+=''' and inv_created_at between $start_date and $end_date''';
+      }
+      
+    // print(sSQL);
     List<Map> datalist = await dbClient.rawQuery(sSQL);
-    List<invoice> list_inv = new List();
+    List<invoice> list_inv = [];
 
     for (var i = 0; i < datalist.length; i++) {
+      List<invoicedet> invdetails=[];
+      sSQL = '''select * 
+            from invoicedet 
+            inner join produk
+              on invdet_item_id = prod_id
+            inner join kategori
+              on kat_id = prod_kat_id
+            inner join kapster
+              on kapster_id = invdet_kapster_id
+            where invdet_inv_id like "${datalist[i]["inv_id"].toString()}" and invdet_deleted_at = 0''';
+
+      List<Map> detdatalist = await dbClient.rawQuery(sSQL);
+      for (var i = 0; i < detdatalist.length; i++) {
+        var rowdet = new invoicedet(
+          detdatalist[i]['invdet_inv_id'],
+          detdatalist[i]['invdet_item_id'],
+          detdatalist[i]['invdet_ket'],
+          detdatalist[i]['invdet_qty'],
+          detdatalist[i]['invdet_price'],
+          detdatalist[i]['invdet_total'],
+          detdatalist[i]['invdet_komisi'],
+          detdatalist[i]['invdet_kapster_id'],
+          detdatalist[i]['invdet_created_at'],
+          detdatalist[i]['invdet_updated_at'],
+          detdatalist[i]['invdet_deleted_at'],
+          invdet_prod_nama: detdatalist[i]['prod_nama'],
+          invdet_kapster_name: detdatalist[i]['kapster_nama'],
+          invdet_kat_komisi: detdatalist[i]['kat_komisi'],
+          invdet_kat_nama: detdatalist[i]['kat_nama'],
+        );
+        rowdet.setId(detdatalist[i]["invdet_id"]);
+        invdetails.add(rowdet);
+      }
       var row = new invoice(
         datalist[i]['inv_no'].toString(),
         datalist[i]['inv_date'].toString(),
@@ -243,12 +298,14 @@ class invoiceDAO {
         datalist[i]['inv_created_at'],
         datalist[i]['inv_updated_at'],
         datalist[i]['inv_deleted_at'],
-        inv_plg_hp: datalist[i]['pelanggan_hp'],
+        inv_plg_hp: datalist[i]['pelanggan_hp'].toString(),
         inv_plg_nama: datalist[i]['pelanggan_nama'],
+        details: invdetails
       );
-      list_inv.add(row);
       row.setId(datalist[i]["inv_id"]);
+      list_inv.add(row);
     }
+    
     return list_inv;
   }
 
@@ -498,7 +555,7 @@ class invoiceDAO {
     String sSQL =
         ''' select *,ifnull(sum(ifnull(invdet_komisi,0)),0) komisi, invdet_inv_id
     from invoice 
-    inner join pelanggan
+    left join pelanggan
       on pelanggan_id = inv_plg_id
     inner join invoicedet
       on invdet_inv_id = inv_id
@@ -618,5 +675,16 @@ class invoiceDAO {
     return ListInvdet;
   }
 
+  Future<int> DeleteTransaction(invoice inv) async {
+    var dbClient = await DBHelper().setDb();
+    int inv_id = inv.inv_id;
+    String sSQL = '''delete from invoice where inv_id = $inv_id ''';
+    await dbClient.rawQuery(sSQL);
+
+    sSQL = '''delete from invoicedet where invdet_inv_id = $inv_id ''';
+    await dbClient.rawQuery(sSQL);
+    return 1;
+
+  }
 
 }

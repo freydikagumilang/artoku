@@ -19,7 +19,7 @@ class _MasterDataState extends State<MasterData> {
           elevation: 0,
           title: Center(
               child: Text(
-            "Master Data",
+            "Data",
             style: TextStyle(fontSize: 25, color: FitnessAppTheme.white),
           )),
         ),
@@ -46,8 +46,8 @@ class _MenuBuilderState extends State<MenuBuilder> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
                 MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 2
-                    : 3),
+                    ? 3
+                    : 4),
         itemCount: _menumaster.length,
         itemBuilder: (BuildContext context, int id) {
           return GestureDetector(
@@ -59,21 +59,23 @@ class _MenuBuilderState extends State<MenuBuilder> {
             child: Padding(
               padding: const EdgeInsets.all(5.0),
               child: Card(
-                  // color: FitnessAppTheme.tosca,
+                  shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                   elevation: 3,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(
                           _menumaster[id].icon,
-                          size: 45,
+                          size: 35,
                           color: FitnessAppTheme.tosca,
                         ),
-                        Padding(padding: EdgeInsets.only(top: 20)),
+                        Padding(padding: EdgeInsets.only(top: 10)),
                         Text(
                           _menumaster[id].menu,
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontFamily: 'SFProDisplay',
                               // fontWeight: FontWeight.w700,
                               color: FitnessAppTheme.tosca),

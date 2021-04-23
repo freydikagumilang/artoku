@@ -44,7 +44,14 @@ class MenuMasterData {
       direction : "/kapster",
       animationController: null,
       menu:"Pegawai",
-      icon: Icons.face
+      icon: Icons.face_retouching_natural
+    ),
+    MenuMasterData(
+      index: 4,
+      direction : "/daftarnota",
+      animationController: null,
+      menu:"Daftar Nota",
+      icon: Icons.receipt_long_rounded
     ),
   ];
 }

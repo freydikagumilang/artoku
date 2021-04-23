@@ -278,7 +278,7 @@ class _ResultLapPenjualanState extends State<ResultLapPenjualan> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        inv[idx].inv_plg_nama,
+                                        (inv[idx].inv_plg_nama==null)?"Tanpa Pelanggan":inv[idx].inv_plg_nama,
                                         style: TextStyle(
                                           fontSize: 18,
                                           color: FitnessAppTheme.white,

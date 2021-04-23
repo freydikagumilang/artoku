@@ -1,6 +1,7 @@
 import 'package:artoku/global_var.dart';
 import 'package:artoku/ui_view/bukukas/bukukas.dart';
 import 'package:artoku/ui_view/intro.dart';
+import 'package:artoku/ui_view/masterdata/daftarnota.dart';
 import 'package:artoku/ui_view/reports/lapkomisi.dart';
 import 'package:artoku/ui_view/reports/lappenjualan.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,7 @@ class _MyAppState extends State<MyApp> {
           '/bukukas': (context) => new BukuKas(),
           '/lappenjualan': (context) => new LapPenjualan(),
           '/lapkomisi': (context) => new LapKomisi(),
+          '/daftarnota': (context) => new DaftarNota(),
         },
         theme: ThemeData(
             cursorColor: Colors.grey,

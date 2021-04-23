@@ -141,7 +141,7 @@ class _ProduklistState extends State<Produklist> {
                                 },
                               ),
                               IconSlideAction(
-                                caption: 'Share',
+                                caption: 'Delete',
                                 color: Colors.red[900],
                                 icon: Icons.delete_outline_rounded,
                                 onTap: () async {

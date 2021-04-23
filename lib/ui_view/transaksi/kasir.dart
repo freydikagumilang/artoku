@@ -469,7 +469,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
   String _newInvNo;
   PrinterBluetoothManager _printManager = PrinterBluetoothManager();
   BluetoothManager _bluetoothManager = BluetoothManager.instance;
-  var NumFormat = new NumberFormat.compact(locale: "en");
+  var NumFormat = new NumberFormat.decimalPattern("id");
   global_var gb = global_var();
   DateTime selectedDate = DateTime.now();
   final formatter = new DateFormat.yMMMMd();
@@ -714,34 +714,29 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                   top: BorderSide(
                             color: Colors.black,
                             width: 1.0,
-                          ))),
+                          ),bottom: BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          )),color: FitnessAppTheme.tosca.withOpacity(0.4)),
                           children: [
-                            Padding(
-                                padding: EdgeInsets.all(0.0),
-                                child: Text("Total",
+                            Text("Total",
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400))),
-                            Padding(
-                              padding: const EdgeInsets.all(0.0),
-                              child: Text(
+                                        fontSize: 18,
+                                        )),
+                           Text(
                                   (global_var.detailkasir == null)
                                       ? "0"
                                       : global_var.detailkasir.length
                                           .toString(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400)),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.all(0.0),
-                                child: Text(NumFormat.format(global_var.total),
+                                      fontSize: 18,)),
+                           
+                           Text(NumFormat.format(global_var.total),
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400))),
+                                        fontSize: 18,)),
                           ]),
                       TableRow(children: [
                         Padding(
@@ -749,8 +744,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                             child: Text("Potongan",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400))),
+                                    fontSize: 18,))),
                         Column(
                           children: [
                             Padding(
@@ -758,8 +752,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               child: Text("",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400)),
+                                      fontSize: 18,)),
                             ),
                           ],
                         ),
@@ -771,7 +764,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                 children: [
                                   Icon(
                                     Icons.edit,
-                                    size: 22,
+                                    size: 20,
                                     color: FitnessAppTheme.tosca,
                                   ),
                                   Text(
@@ -779,7 +772,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                           (global_var.diskon ?? 0)),
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w400)),
                                 ],
                               ),
@@ -808,14 +801,13 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                 "Pembayaran",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400))),
+                                    fontSize: 18,))),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text("",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w400)),
+                                  fontSize: 18)),
                         ),
                         Padding(
                             padding: EdgeInsets.all(0.0),
@@ -825,7 +817,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                 children: [
                                   Icon(
                                     Icons.edit,
-                                    size: 22,
+                                    size: 20,
                                     color: FitnessAppTheme.tosca,
                                   ),
                                   Text(
@@ -833,8 +825,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                           (global_var.pembayaran ?? 0)),
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400)),
+                                          fontSize: 18,)),
                                 ],
                               ),
                               onTap: () async {
@@ -854,7 +845,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               },
                             )),
                       ]),
-                      TableRow(children: [
+                      TableRow(
+                        children: [
                         Padding(
                             padding: EdgeInsets.all(0.0),
                             child: Text(
@@ -863,11 +855,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                     : "Kurang",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400,
-                                    color: (global_var.kembalian > 0)
-                                        ? Colors.black
-                                        : FitnessAppTheme.redtext))),
+                                    fontSize: 18,))),
                         Column(
                           children: [
                             Padding(
@@ -875,7 +863,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               child: Text("",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w400)),
                             ),
                           ],
@@ -886,11 +874,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               NumFormat.format((global_var.kembalian).abs()),
                               textAlign: TextAlign.right,
                               style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                  color: (global_var.kembalian >= 0)
-                                      ? Colors.black
-                                      : FitnessAppTheme.redtext)),
+                                  fontSize: 18,)),
                         ),
                       ]),
                     ],
