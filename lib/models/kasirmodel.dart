@@ -262,7 +262,7 @@ class invoiceDAO {
               on invdet_item_id = prod_id
             inner join kategori
               on kat_id = prod_kat_id
-            inner join kapster
+            left join kapster
               on kapster_id = invdet_kapster_id
             where invdet_inv_id like "${datalist[i]["inv_id"].toString()}" and invdet_deleted_at = 0''';
 
