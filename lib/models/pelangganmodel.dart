@@ -5,11 +5,12 @@ class pelanggan {
   String _pelanggan_nama="";
   String _pelanggan_hp="";
   String _pelanggan_alamat="";
-
+  int fromkasir=0;
   pelanggan(
     this._pelanggan_nama,
     this._pelanggan_hp,
     this._pelanggan_alamat,
+    {this.fromkasir}
   );
   pelanggan.map(dynamic obj) {
     this._pelanggan_nama = obj["pelanggan_nama"];

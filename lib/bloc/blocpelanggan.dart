@@ -1,22 +1,29 @@
+import 'package:artoku/global_var.dart';
 import 'package:artoku/models/pelangganmodel.dart';
 import 'package:bloc/bloc.dart';
 
-class Createpelanggan extends Bloc<pelanggan,String>{
+class Createpelanggan extends Bloc<pelanggan,int>{
   final pelangganDAO = PelangganDAO();
 
-  Createpelanggan(String initialState) : super(initialState);
+  Createpelanggan(int initialState) : super(initialState);
 
   @override
-  Stream<String> mapEventToState(event)async* {
+  Stream<int> mapEventToState(event)async* {
     // TODO: implement mapEventToState
-    int id;
+    int id=0;
     try {
       if(event.pelanggan_id!=0 && event.pelanggan_id!=null){
         id = await pelangganDAO.updatePelanggan(event);
       }else{        
         id = await pelangganDAO.savePelanggan(event);    
       }
-      yield "success";
+      if(event.fromkasir!=0){
+        global_var.kasirpelanggan = event;
+        global_var.kasirpelanggan.setId(id);
+
+      }
+      
+      yield id;
     } catch (e) {
       print(e);
     }

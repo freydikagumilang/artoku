@@ -30,7 +30,7 @@ class InputPelangganState extends State<InputPelanggan> {
             .pushNamed(((widget.fromkasir == 1) ? "/kasir" : "/pelanggan"));
       },
       child: BlocProvider<Createpelanggan>(
-          create: (BuildContext context) => Createpelanggan(""),
+          create: (BuildContext context) => Createpelanggan(0),
           child: Scaffold(
             backgroundColor: FitnessAppTheme.tosca,
             appBar: FrxAppBar(
@@ -124,17 +124,17 @@ class _InputFormPelangganState extends State<InputFormPelanggan> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       pelanggan newplg = pelanggan(
-                          txtNamaPlg.text, txtHP.text, txtAlamat.text);
+                          txtNamaPlg.text, txtHP.text, txtAlamat.text,fromkasir: widget.fromkasir);
+                          
                       if (widget.editplg != null) {
                         newplg.setId(widget.editplg.pelanggan_id);
                       }
-                      Createpelanggan creator = Createpelanggan("");
+                      Createpelanggan creator = Createpelanggan(0);
                       creator.add(newplg);
                       if ((widget.fromkasir == 1)) {
+                        
                         setState(() {
-                        global_var.kasirpelanggan = newplg;
-                        global_var.kasirpelanggan
-                            .setId(newplg.pelanggan_id); 
+                          // print("plg_id"+global_var.kasirpelanggan.pelanggan_id.toString());
                         });
                         Navigator.of(context, rootNavigator: true)
                             .pushNamed("/kasir");

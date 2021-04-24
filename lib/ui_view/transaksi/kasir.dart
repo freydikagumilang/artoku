@@ -579,7 +579,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               child: Text(
                                 ((global_var.kasirpelanggan == null)
                                     ? "Pilih Pelanggan"
-                                    : global_var.kasirpelanggan.pelanggan_nama),
+                                    : (global_var.kasirpelanggan.pelanggan_id.toString()+" - "+global_var.kasirpelanggan.pelanggan_nama)),
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: FitnessAppTheme.nearlyBlue),
