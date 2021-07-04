@@ -111,11 +111,13 @@ class bukukasdet {
 class bukukasDAO {
   Future<List<bukukas>> getBukukas(List<int> tgl) async {
     var dbClient = await DBHelper().setDb();
-    
+
     int _start_date = tgl[0];
     int _end_date = tgl[1];
     String sSQL = '''select * 
     from bukukas where bukukas_created_at between $_start_date  and $_end_date''';
+    // print(DateTime.fromMillisecondsSinceEpoch(_start_date));
+    // print(DateTime.fromMillisecondsSinceEpoch(_end_date));
 
     List<Map> datalist = await dbClient.rawQuery(sSQL);
     List<bukukas> _bukukas = new List();
@@ -162,7 +164,7 @@ class bukukasDAO {
     if (datalist.length > 0) {
       String _tunai = bukas.bukukas_tunai.toString();
       String _nontunai = bukas.bukukas_non_tunai.toString();
-      int _id=datalist[0]['bukukas_id'];
+      int _id = datalist[0]['bukukas_id'];
       sSQL = """update bukukas set bukukas_tunai=bukukas_tunai+$_tunai,
                   bukukas_non_tunai = bukukas_non_tunai+$_nontunai
                   where bukukas_id = $_id""";
@@ -218,7 +220,9 @@ class bukukasDAO {
     var dbClient = await DBHelper().setDb();
 
     int _start_date = _dtRange.start.millisecondsSinceEpoch;
-    int _end_date = DateTime(_dtRange.end.year,_dtRange.end.month,_dtRange.end.day,23,59,59,0,0).millisecondsSinceEpoch;
+    int _end_date = DateTime(_dtRange.end.year, _dtRange.end.month,
+            _dtRange.end.day, 23, 59, 59, 0, 0)
+        .millisecondsSinceEpoch;
     String sSQL = ''' 
                       select 
                       sum(debit)saldo_debit,
@@ -230,16 +234,16 @@ class bukukasDAO {
     from bukukasdet where bukukasdet_created_at between $_start_date and $_end_date ) x''';
 
     List<Map> datalist = await dbClient.rawQuery(sSQL);
-    List<double> _result=[];
+    List<double> _result = [];
 
     for (var i = 0; i < datalist.length; i++) {
-      
-      _result.add((datalist[i]['saldo_debit']==0)?0.0:datalist[i]['saldo_debit']);
-      _result.add((datalist[i]['saldo_kredit']==0)?0.0:datalist[i]['saldo_kredit']);      
+      _result.add(
+          (datalist[i]['saldo_debit'] == 0) ? 0.0 : datalist[i]['saldo_debit']);
+      _result.add((datalist[i]['saldo_kredit'] == 0)
+          ? 0.0
+          : datalist[i]['saldo_kredit']);
       // _result.add();
     }
     return _result;
   }
-
-  
 }

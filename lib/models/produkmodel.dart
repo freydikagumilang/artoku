@@ -15,17 +15,17 @@ class produk {
   double komisi_kat;
 
   produk(
-    this._prod_nama,
-    this._prod_kat_id,
-    this._prod_barcode,
-    this._prod_img,
-    this._prod_countable,
-    this._prod_stock,
-    this._prod_price,
-    this._prod_cogs,
-    this._prod_suspended,
-    {this.kat_nama,this.komisi_kat}
-  );
+      this._prod_nama,
+      this._prod_kat_id,
+      this._prod_barcode,
+      this._prod_img,
+      this._prod_countable,
+      this._prod_stock,
+      this._prod_price,
+      this._prod_cogs,
+      this._prod_suspended,
+      {this.kat_nama,
+      this.komisi_kat});
   produk.map(dynamic obj) {
     this._prod_nama = obj["prod_nama"];
     this._prod_kat_id = obj["prod_kat_id"];
@@ -48,7 +48,6 @@ class produk {
   double get prod_price => _prod_price;
   double get prod_cogs => _prod_cogs;
   int get prod_suspended => _prod_suspended;
-
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -73,7 +72,7 @@ class produk {
 class produkDAO {
   Future<List<produk>> getProd(String cari) async {
     var dbClient = await DBHelper().setDb();
-    
+
     // String sSQLdrop ="drop table produk ";
     // await dbClient.rawQuery(sSQLdrop);
     String sSQL = '''select * from produk 
@@ -85,18 +84,17 @@ class produkDAO {
 
     for (var i = 0; i < datalist.length; i++) {
       var row = new produk(
-        datalist[i]['prod_nama'].toString(),
-        datalist[i]['prod_kat_id'],
-        datalist[i]['prod_barcode'].toString(),
-        datalist[i]['prod_img'].toString(),
-        datalist[i]['prod_countable'],
-        datalist[i]['prod_stock'],
-        datalist[i]['prod_price'],
-        datalist[i]['prod_cogs'],
-        datalist[i]['prod_suspended'],
-        kat_nama: datalist[i]['kat_nama'],
-        komisi_kat:datalist[i]['kat_komisi']
-      );
+          datalist[i]['prod_nama'].toString(),
+          datalist[i]['prod_kat_id'],
+          datalist[i]['prod_barcode'].toString(),
+          datalist[i]['prod_img'].toString(),
+          datalist[i]['prod_countable'],
+          datalist[i]['prod_stock'],
+          datalist[i]['prod_price'],
+          datalist[i]['prod_cogs'],
+          datalist[i]['prod_suspended'],
+          kat_nama: datalist[i]['kat_nama'],
+          komisi_kat: datalist[i]['kat_komisi']);
       listproduk.add(row);
       row.setId(datalist[i]["prod_id"]);
     }
@@ -105,33 +103,31 @@ class produkDAO {
 
   Future<List<produk>> SearchItemKasir(String cari) async {
     var dbClient = await DBHelper().setDb();
-    
+
     // String sSQLdrop ="alter table produk add column prod_sale_retention INTEGER default 0";
     // await dbClient.rawQuery(sSQLdrop);
-    
-    
+
     String sSQL = '''select * from produk 
               left join kategori
               on kat_id = prod_kat_id 
               where prod_nama || kat_nama like "%${cari}%"
-              order by prod_sale_retention desc''';
+              order by prod_nama''';
     List<Map> datalist = await dbClient.rawQuery(sSQL);
     List<produk> listproduk = new List();
 
     for (var i = 0; i < datalist.length; i++) {
       var row = new produk(
-        datalist[i]['prod_nama'].toString(),
-        datalist[i]['prod_kat_id'],
-        datalist[i]['prod_barcode'].toString(),
-        datalist[i]['prod_img'].toString(),
-        datalist[i]['prod_countable'],
-        datalist[i]['prod_stock'],
-        datalist[i]['prod_price'],
-        datalist[i]['prod_cogs'],
-        datalist[i]['prod_suspended'],
-        kat_nama: datalist[i]['kat_nama'],
-        komisi_kat:datalist[i]['kat_komisi']
-      );
+          datalist[i]['prod_nama'].toString(),
+          datalist[i]['prod_kat_id'],
+          datalist[i]['prod_barcode'].toString(),
+          datalist[i]['prod_img'].toString(),
+          datalist[i]['prod_countable'],
+          datalist[i]['prod_stock'],
+          datalist[i]['prod_price'],
+          datalist[i]['prod_cogs'],
+          datalist[i]['prod_suspended'],
+          kat_nama: datalist[i]['kat_nama'],
+          komisi_kat: datalist[i]['kat_komisi']);
       listproduk.add(row);
       row.setId(datalist[i]["prod_id"]);
     }
@@ -144,6 +140,7 @@ class produkDAO {
     print(prod.prod_price);
     return res;
   }
+
   Future<int> updateProd(produk prod) async {
     var dbClient = await DBHelper().setDb();
     int res = await dbClient.update("produk", prod.toMap(),
@@ -153,8 +150,8 @@ class produkDAO {
 
   Future<int> deleteProd(int idprod) async {
     var dbClient = await DBHelper().setDb();
-    int res = await dbClient.rawDelete(
-        "delete from produk where prod_id = ?", [idprod]);
+    int res = await dbClient
+        .rawDelete("delete from produk where prod_id = ?", [idprod]);
     return res;
   }
 }

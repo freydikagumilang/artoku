@@ -179,56 +179,6 @@ class _SearchItemState extends State<SearchItem> {
       child: BlocBuilder<SearchItemKasir, List<produk>>(
         builder: (context, dt_item) => Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  flex: 10,
-                  child: Card(
-                      color: FitnessAppTheme.white,
-                      child: TextFormField(
-                        
-                        controller: txtcariprod,
-                        style: TextStyle(fontSize: 20.0, color: Colors.black),
-                        decoration: InputDecoration(
-                            hintText: "Cari Produk",
-                            contentPadding: EdgeInsets.all(8),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: FitnessAppTheme.tosca,
-                            )),
-                        onChanged: (val) {
-                          Future.delayed(Duration(milliseconds: 500), () {
-                            bloc.add(val);
-                          });
-                        },
-                      )),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      height: 48,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      color: FitnessAppTheme.yellow,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => InputProduk(
-                                      fromkasir: 1,
-                                    )));
-                      },
-                      child: Icon(
-                        Icons.add,
-                        size: 30,
-                        color: FitnessAppTheme.white,
-                      )),
-                ),
-              ],
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: (dt_item == null) ? 0 : dt_item.length,
@@ -325,6 +275,55 @@ class _SearchItemState extends State<SearchItem> {
                 },
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 10,
+                  child: Card(
+                      color: FitnessAppTheme.white,
+                      child: TextFormField(
+                        controller: txtcariprod,
+                        style: TextStyle(fontSize: 20.0, color: Colors.black),
+                        decoration: InputDecoration(
+                            hintText: "Cari Produk",
+                            contentPadding: EdgeInsets.all(8),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: FitnessAppTheme.tosca,
+                            )),
+                        onChanged: (val) {
+                          Future.delayed(Duration(milliseconds: 500), () {
+                            bloc.add(val);
+                          });
+                        },
+                      )),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: FlatButton(
+                      padding: EdgeInsets.all(0),
+                      height: 48,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      color: FitnessAppTheme.yellow,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => InputProduk(
+                                      fromkasir: 1,
+                                    )));
+                      },
+                      child: Icon(
+                        Icons.add,
+                        size: 30,
+                        color: FitnessAppTheme.white,
+                      )),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -343,6 +342,15 @@ class _SearchPelangganState extends State<SearchPelanggan> {
   TextEditingController txtcariplg = TextEditingController();
   List<pelanggan> listplg;
 
+  void initState() {
+    // TODO: implement initState
+    FocusManager.instance.primaryFocus.unfocus();
+    Future.delayed(Duration.zero, () {
+      Getpelanggan bloc = BlocProvider.of<Getpelanggan>(context);
+      bloc.add("");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Getpelanggan bloc_plg = BlocProvider.of<Getpelanggan>(context);
@@ -352,6 +360,51 @@ class _SearchPelangganState extends State<SearchPelanggan> {
         child: BlocBuilder<Getpelanggan, List<pelanggan>>(
           builder: (context, dt_plg) => Column(
             children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: (dt_plg == null) ? 0 : dt_plg.length,
+                  itemBuilder: (context, idx) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          global_var.kasirpelanggan = pelanggan(
+                              dt_plg[idx].pelanggan_nama,
+                              dt_plg[idx].pelanggan_hp,
+                              dt_plg[idx].pelanggan_alamat);
+                          global_var.kasirpelanggan
+                              .setId(dt_plg[idx].pelanggan_id);
+                        });
+                        widget.tabnavigator(2);
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    dt_plg[idx].pelanggan_nama,
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Text(
+                                    dt_plg[idx].pelanggan_hp.toString(),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: FitnessAppTheme.grey),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -406,51 +459,6 @@ class _SearchPelangganState extends State<SearchPelanggan> {
                         )),
                   ),
                 ],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: (dt_plg == null) ? 0 : dt_plg.length,
-                  itemBuilder: (context, idx) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          global_var.kasirpelanggan = pelanggan(
-                              dt_plg[idx].pelanggan_nama,
-                              dt_plg[idx].pelanggan_hp,
-                              dt_plg[idx].pelanggan_alamat);
-                          global_var.kasirpelanggan
-                              .setId(dt_plg[idx].pelanggan_id);
-                        });
-                        widget.tabnavigator(2);
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    dt_plg[idx].pelanggan_nama,
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Text(
-                                    dt_plg[idx].pelanggan_hp.toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: FitnessAppTheme.grey),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -579,7 +587,11 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               child: Text(
                                 ((global_var.kasirpelanggan == null)
                                     ? "Pilih Pelanggan"
-                                    : (global_var.kasirpelanggan.pelanggan_id.toString()+" - "+global_var.kasirpelanggan.pelanggan_nama)),
+                                    : (global_var.kasirpelanggan.pelanggan_id
+                                            .toString() +
+                                        " - " +
+                                        global_var
+                                            .kasirpelanggan.pelanggan_nama)),
                                 style: TextStyle(
                                     fontSize: 18,
                                     color: FitnessAppTheme.nearlyBlue),
@@ -712,31 +724,33 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                           decoration: BoxDecoration(
                               border: Border(
                                   top: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),bottom: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          )),color: FitnessAppTheme.tosca.withOpacity(0.4)),
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  ),
+                                  bottom: BorderSide(
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  )),
+                              color: FitnessAppTheme.tosca.withOpacity(0.4)),
                           children: [
                             Text("Total",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        )),
-                           Text(
-                                  (global_var.detailkasir == null)
-                                      ? "0"
-                                      : global_var.detailkasir.length
-                                          .toString(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 18,)),
-                           
-                           Text(NumFormat.format(global_var.total),
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                        fontSize: 18,)),
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                )),
+                            Text(
+                                (global_var.detailkasir == null)
+                                    ? "0"
+                                    : global_var.detailkasir.length.toString(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                )),
+                            Text(NumFormat.format(global_var.total),
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                )),
                           ]),
                       TableRow(children: [
                         Padding(
@@ -744,7 +758,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                             child: Text("Potongan",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 18,))),
+                                  fontSize: 18,
+                                ))),
                         Column(
                           children: [
                             Padding(
@@ -752,7 +767,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               child: Text("",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 18,)),
+                                    fontSize: 18,
+                                  )),
                             ),
                           ],
                         ),
@@ -797,17 +813,16 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                       TableRow(children: [
                         Padding(
                             padding: EdgeInsets.all(0.0),
-                            child: Text(
-                                "Pembayaran",
+                            child: Text("Pembayaran",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 18,))),
+                                  fontSize: 18,
+                                ))),
                         Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text("",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 18)),
+                              style: TextStyle(fontSize: 18)),
                         ),
                         Padding(
                             padding: EdgeInsets.all(0.0),
@@ -825,7 +840,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                           (global_var.pembayaran ?? 0)),
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                          fontSize: 18,)),
+                                        fontSize: 18,
+                                      )),
                                 ],
                               ),
                               onTap: () async {
@@ -845,8 +861,7 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               },
                             )),
                       ]),
-                      TableRow(
-                        children: [
+                      TableRow(children: [
                         Padding(
                             padding: EdgeInsets.all(0.0),
                             child: Text(
@@ -855,7 +870,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                                     : "Kurang",
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    fontSize: 18,))),
+                                  fontSize: 18,
+                                ))),
                         Column(
                           children: [
                             Padding(
@@ -874,7 +890,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                               NumFormat.format((global_var.kembalian).abs()),
                               textAlign: TextAlign.right,
                               style: TextStyle(
-                                  fontSize: 18,)),
+                                fontSize: 18,
+                              )),
                         ),
                       ]),
                     ],
@@ -886,10 +903,9 @@ class _KasirCheckoutState extends State<KasirCheckout> {
           Padding(padding: EdgeInsets.all(8)),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.teal[300].withOpacity(0.7),
-                shape: StadiumBorder(),
-                elevation: 3
-              ),              
+                  primary: Colors.teal[300].withOpacity(0.7),
+                  shape: StadiumBorder(),
+                  elevation: 3),
               onPressed: () async {
                 if (global_var.kasirpelanggan == null) {
                   AlertDialog _savealert = AlertDialog(
@@ -1007,7 +1023,8 @@ class _KasirCheckoutState extends State<KasirCheckout> {
                     Icon(Icons.save_rounded),
                     Text(
                       " Simpan Transaksi",
-                      style: TextStyle(fontSize: 20.0, color: FitnessAppTheme.white),
+                      style: TextStyle(
+                          fontSize: 20.0, color: FitnessAppTheme.white),
                     ),
                   ],
                 ),

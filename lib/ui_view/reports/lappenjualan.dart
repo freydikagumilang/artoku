@@ -1,4 +1,3 @@
-import 'package:artoku/main.dart';
 import 'package:artoku/models/kasirmodel.dart';
 import 'package:artoku/ui_view/template/frxappbar.dart';
 import 'package:flutter/material.dart';
@@ -91,102 +90,6 @@ class _ResultLapPenjualanState extends State<ResultLapPenjualan> {
             ),
           ),
           Padding(padding: EdgeInsets.only(bottom: 25)),
-          Table(
-              border: TableBorder(
-                top: BorderSide(width: 1, color: FitnessAppTheme.white),
-              ),
-              columnWidths: {
-                0: FractionColumnWidth(0.4),
-                1: FractionColumnWidth(0.3),
-                2: FractionColumnWidth(0.3),
-              },
-              children: [
-                TableRow(
-                    //table header
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                      //                   <--- left side
-                      color: FitnessAppTheme.white,
-                      width: 1.0,
-                    ))),
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.all(2.0),
-                          child: Text(                            
-                            "Total",
-                            textAlign:TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: FitnessAppTheme.white,
-                            ),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text("Komisi",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: FitnessAppTheme.white,
-                            )),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.all(2.0),
-                          child: Text("Laba",
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: FitnessAppTheme.white,
-                              ))),
-                    ]),
-                TableRow(children: [
-                  Container(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          NumCompact.format(total_jual),
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: FitnessAppTheme.white,
-                          ),
-                        )),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 8),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        NumCompact.format(total_komisi),
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: FitnessAppTheme.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 8, 3, 0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        NumCompact.format(total_laba),
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: FitnessAppTheme.white,
-                        ),
-                      ),
-                    ),
-                  )
-                ])
-              ]),
-          Padding(padding: EdgeInsets.only(bottom: 25)),
           BlocBuilder<GetSalesDataPeriodic, List<invoice>>(
             builder: (context, inv) {
               total_jual = 0;
@@ -198,146 +101,252 @@ class _ResultLapPenjualanState extends State<ResultLapPenjualan> {
                   total_komisi += inv[idx].totalkomisi;
                   total_laba += inv[idx].inv_total_net - inv[idx].totalkomisi;
                 }
-              return Expanded(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(bottom: 20),
-                  scrollDirection: Axis.vertical,
-                  child: Table(
-                    border: TableBorder(
-                      top: BorderSide(width: 1, color: FitnessAppTheme.white),
-                    ),
-                    columnWidths: {
-                      0: FractionColumnWidth(0.4),
-                      1: FractionColumnWidth(0.2),
-                      2: FractionColumnWidth(0.2),
-                      3: FractionColumnWidth(0.2),
-                    },
-                    children: [
-                      TableRow(
-                          //table header
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                            //                   <--- left side
-                            color: FitnessAppTheme.white,
-                            width: 1.0,
-                          ))),
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.all(2.0),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Table(
+                      border: TableBorder(
+                        top: BorderSide(width: 1, color: FitnessAppTheme.white),
+                      ),
+                      columnWidths: {
+                        0: FractionColumnWidth(0.4),
+                        1: FractionColumnWidth(0.3),
+                        2: FractionColumnWidth(0.3),
+                      },
+                      children: [
+                        TableRow(
+                            //table header
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                              //                   <--- left side
+                              color: FitnessAppTheme.white,
+                              width: 1.0,
+                            ))),
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: Text(
+                                    "Total",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: FitnessAppTheme.white,
+                                    ),
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Text("Komisi",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: FitnessAppTheme.white,
+                                    )),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: Text("Laba",
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: FitnessAppTheme.white,
+                                      ))),
+                            ]),
+                        TableRow(children: [
+                          Container(
+                            padding: EdgeInsets.only(top: 8),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
                                 child: Text(
-                                  "Nota",
+                                  NumCompact.format(total_jual),
                                   style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                     color: FitnessAppTheme.white,
                                   ),
                                 )),
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text("Total",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: FitnessAppTheme.white,
-                                  )),
-                            ),
-                            Padding(
-                                padding: EdgeInsets.all(2.0),
-                                child: Text("Komisi",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: FitnessAppTheme.white,
-                                    ))),
-                            Padding(
-                                padding: EdgeInsets.all(2.0),
-                                child: Text("Laba",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: FitnessAppTheme.white,
-                                    ))),
-                          ]),
-                      if (inv != null)
-                        for (int idx = 0; idx < inv.length; idx++)
-                          TableRow(
-                              decoration: new BoxDecoration(
-                                color: (idx % 2 == 0)
-                                    ? FitnessAppTheme.tosca
-                                    : Colors.white24,
-                              ),
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(3, 4, 0, 4),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        (inv[idx].inv_plg_nama==null)?"Tanpa Pelanggan":inv[idx].inv_plg_nama,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        inv[idx].inv_no,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: FitnessAppTheme.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 8),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                NumCompact.format(total_komisi),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: FitnessAppTheme.white,
                                 ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                  child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        NumCompact.format(
-                                            inv[idx].inv_total_net),
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: FitnessAppTheme.white,
-                                        ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 8, 3, 0),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                NumCompact.format(total_laba),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: FitnessAppTheme.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        ])
+                      ]),
+                  Padding(padding: EdgeInsets.only(bottom: 25)),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 20),
+                      scrollDirection: Axis.vertical,
+                      child: Table(
+                        border: TableBorder(
+                          top: BorderSide(
+                              width: 1, color: FitnessAppTheme.white),
+                        ),
+                        columnWidths: {
+                          0: FractionColumnWidth(0.4),
+                          1: FractionColumnWidth(0.2),
+                          2: FractionColumnWidth(0.2),
+                          3: FractionColumnWidth(0.2),
+                        },
+                        children: [
+                          TableRow(
+                              //table header
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                //                   <--- left side
+                                color: FitnessAppTheme.white,
+                                width: 1.0,
+                              ))),
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "Nota",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: FitnessAppTheme.white,
+                                      ),
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Text("Total",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: FitnessAppTheme.white,
                                       )),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      NumCompact.format(inv[idx].totalkomisi),
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: FitnessAppTheme.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.fromLTRB(0, 4, 3, 4),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      NumCompact.format(inv[idx].inv_total_net -
-                                          inv[idx].totalkomisi),
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: FitnessAppTheme.white,
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: Text("Komisi",
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: FitnessAppTheme.white,
+                                        ))),
+                                Padding(
+                                    padding: EdgeInsets.all(2.0),
+                                    child: Text("Laba",
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: FitnessAppTheme.white,
+                                        ))),
                               ]),
-                    ],
+                          if (inv != null)
+                            for (int idx = 0; idx < inv.length; idx++)
+                              TableRow(
+                                  decoration: new BoxDecoration(
+                                    color: (idx % 2 == 0)
+                                        ? FitnessAppTheme.tosca
+                                        : Colors.white24,
+                                  ),
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(3, 4, 0, 4),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            (inv[idx].inv_plg_nama == null)
+                                                ? "Tanpa Pelanggan"
+                                                : inv[idx].inv_plg_nama,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: FitnessAppTheme.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            inv[idx].inv_no,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: FitnessAppTheme.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            NumCompact.format(
+                                                inv[idx].inv_total_net),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: FitnessAppTheme.white,
+                                            ),
+                                          )),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          NumCompact.format(
+                                              inv[idx].totalkomisi),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: FitnessAppTheme.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 4, 3, 4),
+                                      child: Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          NumCompact.format(
+                                              inv[idx].inv_total_net -
+                                                  inv[idx].totalkomisi),
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: FitnessAppTheme.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               );
             },
           )

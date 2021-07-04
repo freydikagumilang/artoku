@@ -73,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
                     context: context,
                     initialDate: selectedDate, // Refer step 1
                     firstDate: DateTime(2021),
-                    lastDate: DateTime(DateTime.now().year+1),
+                    lastDate: DateTime(DateTime.now().year + 1),
                     cancelText: "Batal",
                     confirmText: "Pilih",
                   );
@@ -116,11 +116,14 @@ class CashBalance extends StatefulWidget {
 class _CashBalanceState extends State<CashBalance> {
   var NumCompact = new NumberFormat.compact(locale: "id");
   var NumDec = new NumberFormat.decimalPattern("id");
+  var formatter = new DateFormat.yMMMMd();
   double growth = 0;
   double saldo = 0;
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
+      // print(DateTime.fromMillisecondsSinceEpoch((widget.dtunixtime[0])));
+      // print(DateTime.fromMillisecondsSinceEpoch((widget.dtunixtime[1])));
       GetDateSaldo bloc = BlocProvider.of<GetDateSaldo>(context);
       bloc.add(widget.dtunixtime);
     });
@@ -141,6 +144,7 @@ class _CashBalanceState extends State<CashBalance> {
             child: BlocBuilder<GetDateSaldo, List<bukukas>>(
                 builder: (context, dt_saldo) {
               if (dt_saldo != null) {
+                // print(dt_saldo.length);
                 saldo = dt_saldo[1].bukukas_tunai;
                 growth = dt_saldo[1].bukukas_tunai - dt_saldo[0].bukukas_tunai;
               }
@@ -233,8 +237,8 @@ class _CommissionDailySumState extends State<CommissionDailySum> {
           child: BlocBuilder<GetCommissionBydate, List<invoicedet>>(
               builder: (context, invdet) {
             if (invdet != null) {
-              total_job=0;
-              total_komisi=0;
+              total_job = 0;
+              total_komisi = 0;
               for (int idx = 0; idx < invdet.length; idx++) {
                 total_job += invdet[idx].invdet_qty;
                 total_komisi += invdet[idx].invdet_komisi;

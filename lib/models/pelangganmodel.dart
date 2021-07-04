@@ -1,17 +1,13 @@
 import 'package:artoku/dbhelper.dart';
 
 class pelanggan {
-  int pelanggan_id=0;
-  String _pelanggan_nama="";
-  String _pelanggan_hp="";
-  String _pelanggan_alamat="";
-  int fromkasir=0;
-  pelanggan(
-    this._pelanggan_nama,
-    this._pelanggan_hp,
-    this._pelanggan_alamat,
-    {this.fromkasir}
-  );
+  int pelanggan_id = 0;
+  String _pelanggan_nama = "";
+  String _pelanggan_hp = "";
+  String _pelanggan_alamat = "";
+  int fromkasir = 0;
+  pelanggan(this._pelanggan_nama, this._pelanggan_hp, this._pelanggan_alamat,
+      {this.fromkasir});
   pelanggan.map(dynamic obj) {
     this._pelanggan_nama = obj["pelanggan_nama"];
     this._pelanggan_hp = obj["_pelanggan_hp"];
@@ -39,8 +35,9 @@ class pelanggan {
 class PelangganDAO {
   Future<List<pelanggan>> getPelanggan(String cari) async {
     var dbClient = await DBHelper().setDb();
-    
-    List<Map> datalist = await dbClient.rawQuery("select * from pelanggan where pelanggan_nama like '%${cari}%' or pelanggan_hp like '%${cari}%'");
+
+    List<Map> datalist = await dbClient.rawQuery(
+        "select * from pelanggan where pelanggan_nama like '%${cari}%' or pelanggan_hp like '%${cari}%' order by pelanggan_nama");
     List<pelanggan> listpelanggan = new List();
 
     for (var i = 0; i < datalist.length; i++) {
@@ -52,14 +49,16 @@ class PelangganDAO {
       listpelanggan.add(row);
       row.setId(datalist[i]["pelanggan_id"]);
     }
-    
+
     return listpelanggan;
   }
+
   Future<int> savePelanggan(pelanggan pelanggan) async {
     var dbClient = await DBHelper().setDb();
     int res = await dbClient.insert("pelanggan", pelanggan.toMap());
     return res;
   }
+
   Future<int> updatePelanggan(pelanggan pelanggan) async {
     var dbClient = await DBHelper().setDb();
     int res = await dbClient.update("pelanggan", pelanggan.toMap(),
